@@ -1,6 +1,8 @@
 
 
 import User from "../models/user.js";
+import bcrypt from 'bcrypt';
+
 
 
 
@@ -19,8 +21,8 @@ export function signin(req, res) {
 
 
 //signup function 
-export function signup(req, res) {
-    user.create(req.body)
+/*export function signup(req, res) {
+    User.create(req.body)
     .then((newUser) => {
         res.status(201).json({
             email:newUser.email,
@@ -35,6 +37,37 @@ export function signup(req, res) {
     .catch((err) => {
       res.status(500).json({ error: err });
     });
+}*/
+export async function signup(req, res) {
+  const { email, password, Phone_number, role, name, first_name, age } = req.body;
+
+  try {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    const newUser = new User({
+      email,
+      password: hashedPassword,
+      Phone_number,
+      role,
+      name,
+      first_name,
+      age,
+    });
+
+    await newUser.save();
+
+    res.status(201).json({
+      email: newUser.email,
+      Phone_number: newUser.Phone_number,
+      role: newUser.role,
+      name: newUser.name,
+      first_name: newUser.first_name,
+      age: newUser.age,
+    });
+  } catch (err) {
+    res.status(500).json({ error: err });
+  }
 }
 
 
