@@ -35,6 +35,14 @@ export async function signup(req, res) {
   const { email, password, Phone_number, role, name, first_name, age } = req.body;
 
   try {
+    // Check if the email already exists in the database
+    const existingUser = await User.findOne({ email });
+
+    if (existingUser) {
+      // Email already exists
+      return res.status(400).json({ message: "Email already exists" });
+    }
+
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -51,6 +59,7 @@ export async function signup(req, res) {
     await newUser.save();
 
     res.status(201).json({
+
       email: newUser.email,
       Phone_number: newUser.Phone_number,
       role: newUser.role,
@@ -61,6 +70,26 @@ export async function signup(req, res) {
   } catch (err) {
     res.status(500).json({ error: err });
   }
+}
+
+
+//getOnce 
+export async function getOnce(req, res) {
+  const { email } = req.params;
+
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    return res.status(404).json({ message: 'User not found' });
+  }
+
+  res.status(200).json(user);
+}
+
+//getAll 
+export async function getAll(req, res) {
+  const users = await User.find();
+  res.status(200).json(users);
 }
 
 
