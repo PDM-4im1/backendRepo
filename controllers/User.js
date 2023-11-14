@@ -59,7 +59,7 @@ export async function signup(req, res) {
     await newUser.save();
 
     res.status(201).json({
-
+      id : newUser.id,
       email: newUser.email,
       Phone_number: newUser.Phone_number,
       role: newUser.role,
