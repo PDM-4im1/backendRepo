@@ -10,7 +10,7 @@ const port = process.env.PORT || 9090;
 const databaseName = 'shareCommute'
 
 mongoose
-    .connect(`mongodb://localhost:27017/${databaseName}`,)
+    .connect(`mongodb+srv://shareCommute:sharecommute123@cluster0.tnifzps.mongodb.net/${databaseName}`,)
     .then(() => {
         console.log(`connected to ${databaseName}`) 
        })
@@ -30,7 +30,6 @@ async function initializeCounter() {
     console.error('Error initializing counter:', error);
   }
 }
-
 
 app.use(myMiddleware);
 
