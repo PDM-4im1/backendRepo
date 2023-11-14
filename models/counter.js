@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 
 const counterSchema = new mongoose.Schema({
   _id: { type: String, required: true },
+  reference_value: { type: String, unique: true },
   seq: { type: Number, default: 0 }
 });
 
