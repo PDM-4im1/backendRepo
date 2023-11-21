@@ -1,13 +1,30 @@
 import express from 'express';
-import { saveMoyenDeTransport} from '../controllers/MoyendeTransportController.js';
+import { saveMoyenDeTransport,findAllMoyenDeTransport,findAllDrivers,findAllUsers,findAllCovoiturages,saveconducteur} from '../controllers/MoyendeTransportController.js';
 
 const router = express.Router(); 
 
 router 
     .route('/saveMoyenDeTransport')
-    .post(saveMoyenDeTransport); 
+    .put(saveMoyenDeTransport); 
+router
+    .route('/findAllCovoiturages')
+    .get(findAllCovoiturages);
 
+router 
+    .route('/findAllMoyenDeTransport')
+    .get(findAllMoyenDeTransport); 
 
+router 
+    .route('/findAllDrivers')
+    .get(findAllDrivers); 
+
+router 
+
+    .route('/findAllUsers')
+    .get(findAllUsers); 
+router
+       .route('/saveconducteur')
+       .put(saveconducteur);
 
     
     export default router ;

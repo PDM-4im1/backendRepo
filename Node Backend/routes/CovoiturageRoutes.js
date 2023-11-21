@@ -9,7 +9,7 @@ router
 
 router
     .route('/')
-    .get(show)
+    .get(show);
 
 router
     .route('/:location')

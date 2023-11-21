@@ -1,5 +1,6 @@
 import express from 'express'; 
 import mongoose from 'mongoose';
+import morgan from 'morgan';
 import myMiddleware from './middlewares/middleware.js';
 import Counter from './models/counter.js';
 import CovoiturageRoutes from './routes/CovoiturageRoutes.js';
@@ -35,6 +36,7 @@ mongoose
 app.use(myMiddleware);
 
 app.use(express.json());
+app.use(morgan('dev'));
 
 app.use('/covoiturage',CovoiturageRoutes);
 app.use('/moyenDeTransport',MoyenDeTransportRoutes);

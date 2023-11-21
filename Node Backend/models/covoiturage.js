@@ -36,7 +36,7 @@ const covoiturageSchema = new Schema({
 );
 
 covoiturageSchema.pre('save', async function (next) {
-    if (!this.id_cond) {
+    if (!this.id_covoiturage) {
       try {
         const counter = await Counter.findByIdAndUpdate(
           { _id: 'entityId' },
