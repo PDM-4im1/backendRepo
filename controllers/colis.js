@@ -13,20 +13,20 @@ export function addOne(req, res){
             weight: req.body.weight,
             description: req.body.description,
             adresse: req.body.adresse,
-            date: req.body.date,
+            destination: req.body.destination,
             receiverName: req.body.receiverName,
             receiverPhone: req.body.receiverPhone,
         })
         .then((newColis) => {
             res.status(200).json({
-              height: req.newColis.height,
-              width: req.newColis.width,
-              weight: req.newColis.weight,
-              description: req.newColis.description,
-              adresse: req.newColis.adresse,
-              date: req.newColis.date,
-              receiverName: req.newColis.receiverName,
-              receiverPhone: req.newColis.receiverPhone,
+              height: newColis.height,
+              width: newColis.width,
+              weight: newColis.weight,
+              description: newColis.description,
+              adresse: newColis.adresse,
+              destination: newColis.destination,
+              receiverName: newColis.receiverName,
+              receiverPhone: newColis.receiverPhone,
             });
           })
           .catch((err) => {
@@ -52,4 +52,14 @@ export function getOnce(req, res) {
       }
      colis.deleteOne();
      res.status(200).json({ message: 'Colis successfully deleted.' });
+  }
+  
+  export async function findAll(req, res) {
+    try {
+        const colis = await Colis.find();
+        res.status(200).json(colis);
+    } catch (error) {
+        console.error('Error occurred during findAll:', error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
   }

@@ -22,8 +22,8 @@ const colisSchema = new Schema(
             type: String,
             required: true
         },
-        date: {
-            type: Date,
+        destination: {
+            type: String,
             required: true
         },
         receiverName: {
@@ -31,7 +31,7 @@ const colisSchema = new Schema(
             required: true
         },
         receiverPhone: {
-            type: Number,
+            type: String,
             required: true
         },
 

@@ -1,10 +1,11 @@
 import express from 'express';
-import { getOnce,addOne,deleteOnce } from '../controllers/colis.js';
+import { getOnce,addOne,deleteOnce, findAll } from '../controllers/colis.js';
 const router = express.Router();
 
 router
   .route("/")
-  .post(addOne);
+  .post(addOne)
+  .get(findAll);
 
 router
     .route("/:id")

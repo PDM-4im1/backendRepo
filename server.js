@@ -8,7 +8,7 @@ const port = process.env.PORT || 9090;
 const databaseName = 'shareCommute'
 
 mongoose
-    .connect(`mongodb://127.0.0.1:27017/${databaseName}`)
+    .connect(`mongodb+srv://shareCommute:sharecommute123@cluster0.tnifzps.mongodb.net/${databaseName}`)
     .then(() => {
         console.log(`connected to ${databaseName}`) 
        })
@@ -23,6 +23,6 @@ app.use('/colis', colisRoutes);
     
 
  app.listen(port, () => {
-       console.log(`Serveur <link>Express.js</link> en cours d'exécution sur le port ${port}`);
+       console.log(`Serveur en cours d'exécution sur  http://localhost:${port}`);
      });
   
