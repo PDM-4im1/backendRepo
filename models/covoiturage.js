@@ -28,6 +28,14 @@ const covoiturageSchema = new Schema({
     Tarif:{
         type: Number,
         required: false
+    },
+    statut:{
+        type: String,
+        required : false
+    },
+    typeCov:{
+        type: String,
+        required : false
     }
 },
 {

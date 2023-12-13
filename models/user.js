@@ -39,6 +39,10 @@ const userSchema = new Schema(
             type: Number,
             required: true
         },
+        FireToken: {
+            type: String,
+            required: true
+        },
     },
     {
         timestamps: true

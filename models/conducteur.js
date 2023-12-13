@@ -25,6 +25,10 @@ const conducteurSchema = new Schema({
         type: String,
         required: true
     },
+    FireToken: {
+      type: String,
+      require: false
+    },
 },
 {
     timestamps: true

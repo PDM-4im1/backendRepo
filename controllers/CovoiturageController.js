@@ -1,10 +1,11 @@
 import Conducteur from "../models/conducteur.js";
+import covoiturage from "../models/covoiturage.js";
 import Covoiturage from "../models/covoiturage.js";
 
 
 
   export async function saveCovoiturage(req, res){
-    const { id_cond, id_user, pointDepart, pointArrivee, date, Tarif } = req.body;
+    const { id_cond, id_user, pointDepart, pointArrivee, date, Tarif, statut, typeCov } = req.body;
 
   try {
     // Convert date string to ISODate format
@@ -17,6 +18,8 @@ import Covoiturage from "../models/covoiturage.js";
       pointArrivee,
       date: isoDate,
       Tarif,
+      statut,
+      typeCov,
     });
 
     await newCovoiturage.save();
@@ -29,13 +32,15 @@ import Covoiturage from "../models/covoiturage.js";
         pointArrivee: newCovoiturage.pointArrivee,
         date: newCovoiturage.Date,
         Tarif: newCovoiturage.Tarif,
+        statut: newCovoiturage.statut,
+        typeCov: newCovoiturage.typeCov,
       });
     } catch (err) {
       res.status(500).json({ error: err });
     }
   }
   export async function editCovoiturage(req, res) {
-    const { _id, id_cond, id_user, pointDepart, pointArrivee, date, Tarif } = req.body;
+    const { _id, id_cond, id_user, pointDepart, pointArrivee, date, Tarif, statut, typeCov } = req.body;
   
     try {
       // Convert date string to ISODate format
@@ -50,6 +55,8 @@ import Covoiturage from "../models/covoiturage.js";
           pointArrivee,
           date: isoDate,
           Tarif,
+          statut,
+          typeCov
         },
         { new: true }
       );
@@ -66,6 +73,8 @@ import Covoiturage from "../models/covoiturage.js";
         pointArrivee: updatedCovoiturage.pointArrivee,
         date: updatedCovoiturage.Date,
         Tarif: updatedCovoiturage.Tarif,
+        statut : updatedCovoiturage.statut,
+        typeCov : updatedCovoiturage.typeCov,
       });
     } catch (err) {
       res.status(500).json({ error: err });
@@ -75,7 +84,7 @@ import Covoiturage from "../models/covoiturage.js";
   export async function getListeByLocation(req, res) {
     const { localisation } = req.params;
   
-    const conducteur = await Conducteur.findOne({ localisation });
+    const conducteur = await Conducteur.find({ localisation });
   
     if (!conducteur) {
       return res.status(404).json({ message: 'Conducteur not found' });
@@ -99,7 +108,28 @@ import Covoiturage from "../models/covoiturage.js";
       res.status(500).json({ error: error.message });
     }
   }
+  export async function getListeByType(req, res) {
+    const { type } = req.params;
   
+    const covoiturage = await Covoiturage.find({ typeCov:type });
+  
+    if (!covoiturage) {
+      return res.status(404).json({ message: 'covoiturage not found' });
+    }
+  
+    res.status(200).json(covoiturage);
+  }
+  export async function getDetails(req, res) {
+    const id = req.params.id;
+  
+    const covoiturage = await Covoiturage.findOne({ _id:id });
+  
+    if (!covoiturage) {
+      return res.status(404).json({ message: 'covoiturage not found' });
+    }
+  
+    res.status(200).json(covoiturage);
+  }
 
   export async function show(req,res){
     const { client, pointDepart, pointArrivee } = req.body;
