@@ -40,30 +40,46 @@ import MoyenDeTransport from "../models/MoyenDeTransport.js";
     }
   }
   export async function editCovoiturage(req, res) {
-    const { _id, id_cond, id_user, pointDepart, pointArrivee, date, Tarif, statut, typeCov } = req.body;
+    const { id_cond, id_user, pointDepart, pointArrivee, date, Tarif, statut, typeCov } = req.body;
+    const { id } = req.params;
   
     try {
       // Convert date string to ISODate format
       const isoDate = new Date(date);
   
-      const updatedCovoiturage = await Covoiturage.findOneAndUpdate(
-        { _id },
-        {
-          id_cond,
-          id_user,
-          pointDepart,
-          pointArrivee,
-          date: isoDate,
-          Tarif,
-          statut,
-          typeCov
-        },
-        { new: true }
-      );
+      const updatedCovoiturage = await Covoiturage.findById(id);
   
       if (!updatedCovoiturage) {
         return res.status(404).json({ error: 'Covoiturage not found' });
       }
+  
+      // Update the properties of the Covoiturage document
+     if(id_cond != null){
+      updatedCovoiturage.id_cond = id_cond;
+     }
+      if(id_user != null){
+      updatedCovoiturage.id_user = id_user;
+      }
+      if(pointDepart != null){
+      updatedCovoiturage.pointDepart = pointDepart;
+      }
+      if(pointArrivee != null){
+      updatedCovoiturage.pointArrivee = pointArrivee;
+      }
+      if(isoDate != null){
+      updatedCovoiturage.date = isoDate;
+      }
+      if(Tarif != null){
+      updatedCovoiturage.Tarif = Tarif;
+      }
+      if(id_cond != null){
+      updatedCovoiturage.statut = statut;
+    }
+    if(typeCov != null){
+      updatedCovoiturage.typeCov = typeCov;
+    }
+      // Save the updated Covoiturage document
+      await updatedCovoiturage.save();
   
       res.status(200).json({
         id: updatedCovoiturage._id,
@@ -71,10 +87,10 @@ import MoyenDeTransport from "../models/MoyenDeTransport.js";
         client: updatedCovoiturage.id_user,
         pointDepart: updatedCovoiturage.pointDepart,
         pointArrivee: updatedCovoiturage.pointArrivee,
-        date: updatedCovoiturage.Date,
+        date: updatedCovoiturage.date,
         Tarif: updatedCovoiturage.Tarif,
-        statut : updatedCovoiturage.statut,
-        typeCov : updatedCovoiturage.typeCov,
+        statut: updatedCovoiturage.statut,
+        typeCov: updatedCovoiturage.typeCov,
       });
     } catch (err) {
       res.status(500).json({ error: err });
