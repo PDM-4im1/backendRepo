@@ -1,6 +1,8 @@
 import  express  from 'express';
 import mongoose from 'mongoose';
 import colisRoutes from './routes/colis.js';
+import cors from 'cors';
+
 
 const app = express();
 const port = process.env.PORT || 9090;
@@ -18,6 +20,7 @@ mongoose
       
       
 app.use(express.json()); 
+app.use(cors());
    
 app.use('/colis', colisRoutes);
     
