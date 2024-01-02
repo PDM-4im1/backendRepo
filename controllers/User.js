@@ -58,8 +58,20 @@ export async function signup(req, res) {
 
     await newUser.save();
 
+    if (role === 'driver') {
+      // If the user's role is a driver, create an instance in the Conducteur entity
+      const newConducteur = new Conducteur({
+        id_user: newUser._id, // Assuming _id is the identifier for the user in the User entity
+        pointDepart: 'defaultPointDepart', // You may replace with actual data
+        pointArrivee: 'defaultPointArrivee', // You may replace with actual data
+        localisation: 'defaultLocalisation', // You may replace with actual data
+      });
+
+      await newConducteur.save();
+    }
+
     res.status(201).json({
-      success: true, // Add this line to indicate success
+      success: true,
       email: newUser.email,
       Phone_number: newUser.Phone_number,
       role: newUser.role,

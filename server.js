@@ -8,6 +8,7 @@ import colisRoutes from './routes/colis.js';
 import userRoutes from './routes/user.js';
 import blogRoutes from './routes/blog.js';
 import Covoiturage from './models/covoiturage.js';
+import cors from 'cors';
 
 
 const app = express();
@@ -24,7 +25,9 @@ mongoose
       });
 
 
-
+      
+      app.use(express.json()); 
+      app.use(cors());
 
 app.use(myMiddleware);
 

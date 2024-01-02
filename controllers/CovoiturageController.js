@@ -3,62 +3,48 @@ import Covoiturage from "../models/covoiturage.js";
 import userSchema from "../models/user.js";
 import MoyenDeTransport from "../models/MoyenDeTransport.js";
 
-export async function findAllCovoituragesClient(req,res) {
-  try {
-      const { id_user } = req.params; // Assuming id_user is in the request parameters
-      const covoiturage = await Covoiturage.find();
-      
-      if (!covoiturage || covoiturage.length === 0) {
-          return res.status(404).json({ message: "Covoiturage not found" });
-      }
-
-      res.status(200).json(covoiturage);
-  } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Internal Server Error" });
-  }
-}
   export async function saveCovoiturage(req, res){
-    const { id_cond, id_user, pointDepart, pointArrivee, dateCovoiturage, Tarif, statut, typeCov } = req.body;
-    console.log("newCovoiturage")
+    const { id_cond, id_user, pointDepart, pointArrivee, dateCovoirurage, Tarif, statut, typeCov } = req.body;
+
   try {
     // Convert date string to ISODate format
+    const isoDate = new Date(dateCovoirurage);
 
     const newCovoiturage = new Covoiturage({
       id_cond,
       id_user,
       pointDepart,
       pointArrivee,
-      dateCovoiturage,
+      dateCovoirurage: isoDate,
       Tarif,
       statut,
       typeCov,
     });
-    
 
     await newCovoiturage.save();
 
-    res.status(201).json({
-        conducteur: newCovoiturage.id_cond,
-        client: newCovoiturage.id_user,
-        pointDepart: newCovoiturage.pointDepart,
-        pointArrivee: newCovoiturage.pointArrivee,
-        dateCovoiturage: newCovoiturage.dateCovoiturage,
-        Tarif: newCovoiturage.Tarif,
-        statut: newCovoiturage.statut,
-        typeCov: newCovoiturage.typeCov,
-      });
+    res.status(201).json(
+      { _id : newCovoiturage.id,
+        id_cond : newCovoiturage.id_cond,
+        id_user : newCovoiturage.id_user,
+        pointDepart : newCovoiturage.pointDepart,
+        pointArrivee : newCovoiturage.pointArrivee,
+        dateCovoirurage : newCovoiturage.dateCovoirurage,
+        Tarif : newCovoiturage.Tarif,
+        statut : newCovoiturage.statut,
+        typeCov : newCovoiturage.typeCov}
+      );
     } catch (err) {
       res.status(500).json({ error: err });
     }
   }
   export async function editCovoiturage(req, res) {
-    const { id_cond, id_user, pointDepart, pointArrivee, dateCovoiturage, Tarif, statut, typeCov } = req.body;
+    const { id_cond, id_user, pointDepart, pointArrivee, dateCovoirurage, Tarif, statut, typeCov } = req.body;
     const { id } = req.params;
   
     try {
       // Convert date string to ISODate format
-      const isoDate = new Date(date);
+      const isoDate = new Date(dateCovoirurage);
   
       const updatedCovoiturage = await Covoiturage.findById(id);
   
@@ -80,7 +66,7 @@ export async function findAllCovoituragesClient(req,res) {
       updatedCovoiturage.pointArrivee = pointArrivee;
       }
       if(isoDate != null){
-      updatedCovoiturage.dateCovoiturage = dateCovoiturage;
+      updatedCovoiturage.dateCovoirurage = isoDate;
       }
       if(Tarif != null){
       updatedCovoiturage.Tarif = Tarif;
@@ -91,6 +77,9 @@ export async function findAllCovoituragesClient(req,res) {
     if(typeCov != null){
       updatedCovoiturage.typeCov = typeCov;
     }
+    if(statut != null){
+      updatedCovoiturage.statut = statut
+    }
       // Save the updated Covoiturage document
       await updatedCovoiturage.save();
   
@@ -100,7 +89,7 @@ export async function findAllCovoituragesClient(req,res) {
         client: updatedCovoiturage.id_user,
         pointDepart: updatedCovoiturage.pointDepart,
         pointArrivee: updatedCovoiturage.pointArrivee,
-        dateCovoiturage: updatedCovoiturage.dateCovoiturage,
+        dateCovoirurage: updatedCovoiturage.dateCovoirurage,
         Tarif: updatedCovoiturage.Tarif,
         statut: updatedCovoiturage.statut,
         typeCov: updatedCovoiturage.typeCov,
@@ -168,20 +157,7 @@ export async function getListeByLocation(req, res) {
       res.status(500).json({ message: "Internal Server Error" });
     }
   }
-  export async function findConducteurById(req, res) {
-    const id = req.params.id;
-    try {
-      const conducteur = await Conducteur.findOne({ _id: id });
-      if (conducteur) {
-        res.status(200).json(conducteur);
-      } else {
-        res.status(404).json({ error: 'Conducteur not found' });
-      }
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Internal Server Error' });
-    }
-  }
+
   export async function getDetails(req, res) {
     const id = req.params.id;
   
@@ -203,7 +179,62 @@ export async function getListeByLocation(req, res) {
         res.status(500).json({ message: "Internal Server Error" });
     } 
   }
+  export async function getLastCovoiturage(req, res) {
+    try {
+      // Find the last covoiturage entry based on the timestamps
+      const lastCov = await Covoiturage.findOne().sort({ createdAt: -1 }).limit(1);
+  
+      if (!lastCov) {
+        return res.status(404).json({ message: 'No covoiturage found' });
+      }
+  
+      res.status(200).json(lastCov);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  }
+  export async function findCovoiturageById(req, res) {
+    const id = req.params.id;
+    try {
+        const Covoiturage = await Covoiturage.findOne({_id:id });
+        res.status(200).json(Covoiturage);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal Server Error" });
+    } 
+  }
+  export async function SendMailById(req, res) {
+    const id = req.params.id;
+    const cov = req.params.covoiturage
+    try {
+        const userSchema = await userSchema.findOne({_id:id });
+        const Covoiturage = await Covoiturage.findOne({_id:cov.id });
+        mailer.sendEmail(userSchema,Covoiturage)
+        res.status(200).json(userSchema);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal Server Error" });
+    } 
+  }
   export async function show(req,res){
     const { client, pointDepart, pointArrivee } = req.body;
     res.status(200).json('point de depart :', pointDepart, "point d'arrivee :",pointArrivee);
+  }
+  export async function getListecovcond(req, res) {
+    console.log("req.params")
+    const { type, id_cond } = req.params;
+  
+    // Query condition: typeCov matches the given type, id_cond matches the given id_cond, and statut is not equal to 'active'
+    const covoiturage = await Covoiturage.find({
+      typeCov: type,
+      id_cond: id_cond,
+      statut: { $ne: 'active' }  // $ne is a MongoDB operator that means "not equal to"
+    });
+  
+    if (!covoiturage || covoiturage.length === 0) {
+      return res.status(404).json({ message: 'covoiturage not found' });
+    }
+  
+    res.status(200).json(covoiturage);
   }
