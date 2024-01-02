@@ -21,7 +21,7 @@ const covoiturageSchema = new Schema({
         type: String,
         required: false
     },
-    Date:{
+    dateCovoirurage:{
         type: String,
         required: false
     },

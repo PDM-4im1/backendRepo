@@ -1,5 +1,5 @@
 import express from 'express';
-import { deleteOnce, getListeByLocation, saveCovoiturage, show,editCovoiturage,getListeByType,getDetails,findUserById,findMoyenDeTransportById } from '../controllers/CovoiturageController.js';
+import { getListecovcond,findCovoiturageById,getLastCovoiturage,deleteOnce, getListeByLocation, saveCovoiturage, show,editCovoiturage,getListeByType,getDetails,findUserById,findMoyenDeTransportById, SendMailById } from '../controllers/CovoiturageController.js';
 
 const router = express.Router(); 
 
@@ -31,8 +31,25 @@ router
     .delete(deleteOnce);
 router
     .route('/edit/:id')
-    .put(editCovoiturage);    
-    export default router ;
+    .put(editCovoiturage);   
 router
     .route('/findMoyenDeTransportById/:id')
     .get(findMoyenDeTransportById)
+
+router
+    .route('/LastCov')
+    .get(getLastCovoiturage)
+
+router
+    .route('/findCovoiturage/:id')
+    .get(findCovoiturageById)
+
+router
+.route("/SendMailById/:id/:covoiturage")
+.get(SendMailById)
+
+router
+.route("/ConducteurCovoiturage/:type/:id_cond")
+.get(getListecovcond)
+ 
+export default router ;
