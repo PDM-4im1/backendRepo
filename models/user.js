@@ -36,6 +36,10 @@ const userSchema = new Schema(
             type: Number,
             required: true
         },
+        id_moyen_transpor:{
+            type: String,
+            default: "",
+        },
     },
     {
         timestamps: true

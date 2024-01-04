@@ -5,6 +5,7 @@ import cors from 'cors';
 import myMiddleware from './middlewares/middleware.js';
 import CovoiturageRoutes from './routes/CovoiturageRoutes.js';
 import MoyenDeTransportRoutes from './routes/MoyenDeTransportRoutes.js';
+import user from './routes/user.js';
 
 
 const app = express();
@@ -30,6 +31,7 @@ app.use(cors());
 
 app.use('/covoiturage',CovoiturageRoutes);
 app.use('/moyenDeTransport',MoyenDeTransportRoutes);
+app.use('/',user);
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}/`);

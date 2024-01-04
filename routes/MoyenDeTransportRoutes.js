@@ -1,5 +1,5 @@
 import express from 'express';
-import { saveMoyenDeTransport,findAllMoyenDeTransport,findAllDrivers,findAllUsers,findAllCovoiturages,saveconducteur,editMoyenDeTransport,deleteMoyenDeTransport} from '../controllers/MoyendeTransportController.js';
+import { saveMoyenDeTransport,findAllMoyenDeTransport,findAllDrivers,findAllCovoiturages,saveconducteur,editMoyenDeTransport,deleteMoyenDeTransport} from '../controllers/MoyendeTransportController.js';
 
 const router = express.Router(); 
 
@@ -20,9 +20,6 @@ router
 
 router 
 
-    .route('/findAllUsers')
-    .get(findAllUsers); 
-router
        .route('/saveconducteur')
        .put(saveconducteur);
 router 

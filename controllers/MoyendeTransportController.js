@@ -132,7 +132,7 @@ export async function findAllCovoiturages(req, res) {
       res.status(500).json({ message: "Internal Server Error" });
   }
 }
-export async function findAllUsers(req, res) {
+export async function findAllDrivers(req, res) {
   try {
     const driverUsers = await userSchema.find({ role:'driver' });
     res.status(200).json(driverUsers);
@@ -142,12 +142,4 @@ export async function findAllUsers(req, res) {
   }
 }
 
-export async function findAllDrivers(req, res) {
-  try {
-      const conducteur = await conducteurSchema.find();
-      res.status(200).json(conducteur);
-  } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Internal Server Error" });
-  }
-}
+

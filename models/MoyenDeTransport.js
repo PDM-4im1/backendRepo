@@ -25,7 +25,7 @@ const MoyenDeTransport = new Schema({
         required: false
     },
     idConducteur: {
-        type: Number,
+        type: String,
         required: false
     },
 });
